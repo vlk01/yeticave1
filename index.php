@@ -32,7 +32,7 @@ $user_name = 'vlk01'; // укажите здесь ваше имя
                     <img src="img/user.jpg" width="40" height="40" alt="Пользователь">
                 </div>
                 <div class="user-menu__logged">
-                    <p></p>
+                    <p><?php echo($user_name); ?></p>
                 </div>
             <?php else: ?>
                 <ul class="user-menu__list">
