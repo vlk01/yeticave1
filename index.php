@@ -2,6 +2,68 @@
 $is_auth = rand(0, 1);
 
 $user_name = 'vlk01'; // укажите здесь ваше имя
+
+$categories_list = [
+    'boards' => 'Доски и лыжи',
+    'fasteners' => 'Крепления',
+    'boots' => 'Ботинки',
+    'clothes' => 'Одежда',
+    'tools' => 'Инструменты',
+    'different' => 'Разное',
+];
+$data_list = [
+    [
+    'name' => '2014 Rossignol District Snowboard',
+    'category' => 'boards',
+    'count' => '10999',
+    'URL_img' => 'img/lot-1.jpg',
+],
+[
+    'name' => 'DC Ply Mens 2016/2017 Snowboard',
+    'category' => 'boards',
+    'count' => '159999',
+    'URL_img' => 'img/lot-2.jpg',
+],
+[
+    'name' => 'Крепления Union Contact Pro 2015 года размер L/XL',
+    'category' => 'fasteners',
+    'count' => '8000',
+    'URL_img' => 'img/lot-3.jpg',
+],
+[
+    'name' => 'Ботинки для сноуборда DC Mutiny Charocal',
+    'category' => 'boots',
+    'count' => '10999',
+    'URL_img' => 'img/lot-4.jpg',
+],
+[
+    'name' => 'Куртка для сноуборда DC Mutiny Charocal',
+    'category' => 'clothes',
+    'count' => '7500',
+    'URL_img' => 'img/lot-5.jpg',
+],
+[
+    'name' => 'Маска Oakley Canopy',
+    'category' => 'different',
+    'count' => '5400',
+    'URL_img' => 'img/lot-6.jpg',
+],
+];
+
+function Sum_Price($sum, $withRubleElem)
+{
+    ceil($sum);
+    if($sum<=1000)
+    {
+        return $sum;
+    }
+    else
+        {
+            $sum = number_format ($sum, 0, '.', ' ');
+            return $sum;
+        }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -28,23 +90,23 @@ $user_name = 'vlk01'; // укажите здесь ваше имя
 
         <nav class="user-menu">
             <?php if($is_auth): ?>
-                <div class="user-menu__image">
-                    <img src="img/user.jpg" width="40" height="40" alt="Пользователь">
-                </div>
-                <div class="user-menu__logged">
-                    <p><?php echo($user_name); ?></p>
-                </div>
-            <?php else: ?>
-                <ul class="user-menu__list">
-                    <li class="user-menu__item">
-                        <a href="#">Регистрация</a>
-                    </li>
-                    <li class="user-menu__item">
-                        <a href="#">Вход</a>
-                    </li>
-                </ul>
+            <div class="user-menu__image">
+                <img src="img/user.jpg" width="40" height="40" alt="Пользователь">
+            </div>
+            <div class="user-menu__logged">
+                <p><?php echo($user_name); ?></p>
+            </div>
+                <?php else: ?>
+            <ul class="user-menu__list">
+                <li class="user-menu__item">
+                    <a href="#">Регистрация</a>
+                </li>
+                <li class="user-menu__item">
+                    <a href="#">Вход</a>
+                </li>
+            </ul>
             <?php endif; ?>
-        <!-- здесь должен быть PHP код для показа меню и данных пользователя -->
+            <!-- здесь должен быть PHP код для показа меню и данных пользователя -->
 
         </nav>
     </div>
@@ -55,10 +117,12 @@ $user_name = 'vlk01'; // укажите здесь ваше имя
         <h2 class="promo__title">Нужен стафф для катки?</h2>
         <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное снаряжение.</p>
         <ul class="promo__list">
-            <!--заполните этот список из массива категорий-->
-            <li class="promo__item promo__item--boards">
-                <a class="promo__link" href="pages/all-lots.html">Имя категории</a>
+            <?php foreach($categories_list as $a=>$val) :?>
+
+            <li class="promo__item promo__item-- <?php $a ?> ">
+                <a class="promo__link" href="pages/all-lots.html"><?php echo($val);?></a>
             </li>
+            <?php endforeach; ?>
         </ul>
     </section>
     <section class="lots">
@@ -67,17 +131,18 @@ $user_name = 'vlk01'; // укажите здесь ваше имя
         </div>
         <ul class="lots__list">
             <!--заполните этот список из массива с товарами-->
+            <?php foreach($data_list as $z => $val) :?>
             <li class="lots__item lot">
                 <div class="lot__image">
-                    <img src="" width="350" height="260" alt="">
+                    <img src="img/lot-<?=($z + 1)?>.jpg" width="350" height="260" alt="<?php $val['name']?>">
                 </div>
                 <div class="lot__info">
-                    <span class="lot__category">Название категории</span>
-                    <h3 class="lot__title"><a class="text-link" href="pages/lot.html">Название товара</a></h3>
+                    <span class="lot__category"><?php echo($categories_list[$val['category']]); ?></span>
+                    <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?php echo($val['name']); ?></a></h3>
                     <div class="lot__state">
                         <div class="lot__rate">
-                            <span class="lot__amount">Стартовая цена</span>
-                            <span class="lot__cost">цена<b class="rub">р</b></span>
+                            <span class="lot__amount"><?php echo($val['count']);?></span>
+                            <span class="lot__cost"> <?= Sum_Price($val['count'], true) ?><b class="rub">р</b></span>
                         </div>
                         <div class="lot__timer timer">
                             12:23
@@ -85,6 +150,7 @@ $user_name = 'vlk01'; // укажите здесь ваше имя
                     </div>
                 </div>
             </li>
+            <?php endforeach; ?>
         </ul>
     </section>
 </main>
@@ -93,10 +159,12 @@ $user_name = 'vlk01'; // укажите здесь ваше имя
 <footer class="main-footer">
     <nav class="nav">
         <ul class="nav__list container">
+            <?php foreach($categories_list as $a=>$val) :?>
             <!--заполните этот список из массива категорий-->
-            <li class="nav__item">
-                <a href="pages/all-lots.html">Название категории</a>
+            <li class="nav__item nav__item--<?php $a?>">
+                <a href="pages/all-lots.html"><?php echo($val);?></a>
             </li>
+            <?php endforeach; ?>
         </ul>
     </nav>
     <div class="main-footer__bottom container">
