@@ -84,7 +84,16 @@ return $sum;
 }
 
 
-
+function My_Timer()
+{
+    $now = strtotime('now');
+    $now2 = strtotime('tomorrow');
+    $hours_in_sec = $now2 - $now;
+    $hours = floor($hours_in_sec/3600);
+    $minute = (($hours_in_sec/3600) - $hours)*60;
+    $timer = sprintf('%02d:%02d', $hours, $minute);
+    return $timer;
+}
 
 
 ?>
