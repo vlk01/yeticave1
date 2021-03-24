@@ -9,7 +9,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     foreach ($required_fields as $field) {
         if (empty($_POST[$field])) {
-            $errors[$field] = 'Заполните поле';
+            $errors[$field] = "form__item--invalid";
+            $form_error = 'form--invalid';
         }
         if ($field == 'lot-rate') {
             if (!filter_var($_POST[$field], FILTER_VALIDATE_INT)) {
@@ -30,7 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if(count($errors) !== 0) {
         $page_content = compile_template('add.php',
-            ['errors' => $errors]);
+            ['errors' => $errors,
+                'categories_list' => $categories_list]);
     } else {
         $lot = [
                 "image" => file_url ? 'img/user.jpg' : '',
@@ -42,19 +44,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 "description" => $_POST['message'],
                 "account_id" => $_SESSION['auth']['account_id']
         ];
+		$page_content = compile_template( 'add.php',
+            ['categories_list' => $categories_list,
+                'lot' => $currentLot,
+                'lotID' => $lotID,
+                'data_list' => $data_list,
+                'lot_time_remaining' => $lot_time_remaining]);
     }
 
 }
+else {
+    $page_content = compile_template('add.php',
+        ['categories_list' => $categories_list,
+            'data_list' => $data_list
+        ]);
 
-print_r($lot);
-print_r($errors);
-
-$page_content = compile_template( 'add.php',
-    ['categories_list' => $categories_list,
-        'lot' => $currentLot,
-        'lotID' => $lotID,
-        'data_list' => $data_list,
-        'lot_time_remaining' => $lot_time_remaining]);
+}
 
 $layout_content = compile_template('layout.php',
     ['page_layout' => 'Главная страница',
