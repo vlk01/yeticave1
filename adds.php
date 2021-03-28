@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $sql = "INSERT INTO lots(lot_name, lot_discr, lot_image, lot_categ_id, lot_first_price, lot_comp_date, lot_step)
         VALUE ('{$lot['lot_name']}', '{$lot['lot_discr']}', '{$lot['lot_categ_id']}', '{$lot['lot_first_price']}', '{$lot['lot_comp_date']}', '{$lot['lot_step']}')";
         $result = mysqli_querry($con, $sql);
-        if(!!$result)
+        if(!$result)
             echo mysqli_error($con);
 
 
